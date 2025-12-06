@@ -205,7 +205,6 @@ async def get_voices(request: Request, db: Session = Depends(get_db)):
     credential = db.query(AzureCredentials).filter(
         AzureCredentials.id == credential_id and AzureCredentials.user_id == user_id).first()
 
-    # Recordar: Dejar de comentar
     if not credential:
         raise HTTPException(status_code=404, detail="Credentials not matched")
 
