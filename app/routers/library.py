@@ -7,15 +7,20 @@ from app.integrations.alchemy import get_db
 router = APIRouter(prefix="/libraries", tags=["Libraries"])
 
 @router.post("/")
-def create_library(request: Request, db: Session = Depends(get_db)):
+async def create_library(request: Request, db: Session = Depends(get_db)):
     user_id = request.state.user.get('id')
     user= db.query(Users).filter(Users.id == user_id).first()
     
     if not user:
         raise HTTPException(status_code=404, detail="User not found")    
     
+    body = await request.json()
+    document_id = body.get('document_id')
+
+
     new_library = Library(
-        user_id=user_id,
+        user_id = user_id,
+        document_id = document_id
     )
 
     db.add(new_library) 
@@ -26,3 +31,8 @@ def create_library(request: Request, db: Session = Depends(get_db)):
 @router.get("/")
 def get_libraries(db: Session = Depends(get_db)):
     return db.query(Library).all()
+
+    # id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
+    # user_id = Column(UUID(as_uuid=True), ForeignKey("accounts.users.id"), unique=True, nullable=False)
+    # document_id = Column(UUID(as_uuid=True), ForeignKey("spellcast.document.id"), nullable=True)
+    # created_at = Column(DateTime, default=datetime.utcnow)

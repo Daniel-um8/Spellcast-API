@@ -22,8 +22,31 @@ class Library(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("accounts.users.id"), unique=True, nullable=False)
-    document_id = Column(UUID(as_uuid=True), ForeignKey("spellcast.document.id"), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("Users", uselist=False)
-    document = relationship("Document", uselist=False)
+
+class DocumentLibrary(Base):
+    __tablename__ = "documentlibrary"
+    __table_args__ = {"schema": "spellcast"}
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
+    document_id = Column(UUID(as_uuid=True), ForeignKey("spellcast.document.id"), nullable=True)
+    library_id = Column(UUID(as_uuid=True), ForeignKey("spellcast.library.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+ 
+    document = relationship("Document")
+    library = relationship("Library")    
+
+
+Document.documentlibrary = relationship(
+    DocumentLibrary,
+    back_populates="document",
+    uselist=False
+)
+
+Library.documentlibrary = relationship(
+    DocumentLibrary,
+    back_populates="library",
+    uselist=False
+)
