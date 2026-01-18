@@ -1,6 +1,6 @@
 from uuid import uuid4
 from app.integrations.alchemy import engine, Base
-from models.library import Library
+from app.models.library import Library
 from sqlalchemy import Column, String, ForeignKey, Text, DateTime, Table, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID, JSONB

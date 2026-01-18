@@ -38,7 +38,6 @@ class DocumentLibrary(Base):
     document = relationship("Document")
     library = relationship("Library")    
 
-
 Document.documentlibrary = relationship(
     DocumentLibrary,
     back_populates="document",
