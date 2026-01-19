@@ -31,8 +31,3 @@ async def create_library(request: Request, db: Session = Depends(get_db)):
 @router.get("/")
 def get_libraries(db: Session = Depends(get_db)):
     return db.query(Library).all()
-
-    # id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    # user_id = Column(UUID(as_uuid=True), ForeignKey("accounts.users.id"), unique=True, nullable=False)
-    # document_id = Column(UUID(as_uuid=True), ForeignKey("spellcast.document.id"), nullable=True)
-    # created_at = Column(DateTime, default=datetime.utcnow)
