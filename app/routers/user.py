@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Request, HTTPException, Query
 from sqlalchemy.orm import Session
-from app.models import AzureCredentials, Users, UserSubscription
+from app.models.user import AzureCredentials, Users, UserSubscription
 from app.integrations.redis import get_cache, set_cache
 from app.integrations.fernet import encrypt_str, decrypt_str
 from app.integrations.alchemy import get_db
@@ -214,9 +214,8 @@ async def get_voices(request: Request, db: Session = Depends(get_db)):
     cached = get_cache(key)
     if cached:
         return cached
-
+    
     valid_voices = await get_voices_list(credential.region, azure_api_key)
-    key = f"voices:{credential.region}"
     set_cache(key, str(valid_voices))
     return valid_voices
 
