@@ -15,7 +15,7 @@ async def authentication(request: Request, call_next):
     if request.url.path in public_routes:
         return await call_next(request)
 
-    token = request.cookies.get('userToken')
+    token = request.cookies.get('accessToken')
     if not token:
         raise HTTPException(status_code=401, detail='Token not provided')
     try:
